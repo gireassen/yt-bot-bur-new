@@ -1,0 +1,22 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  VER_IMAGE: "10.10.10.10:5000/yt-bot-bur:${CI_COMMIT_TAG}"
+
+build-job:
+  stage: build
+  only:
+    - tags
+  script:
+    - echo "Building the project..."
+    - docker build . -t $VER_IMAGE
+
+deploy-job:
+  stage: deploy
+  only:
+    - tags
+  script:
+    - echo "Deploying application..."
+    - docker push $VER_IMAGE
